@@ -6,6 +6,8 @@ import Inventory from "./Inventory";
 
 // We put {} in props for everthing that is not string
 
+// state is an object that lives inside a component
+
 class App extends Component {
   render() {
     return (

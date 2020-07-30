@@ -36,8 +36,12 @@ class StorePicker extends Component {
     e.preventDefault();
 
     // 2. Get the text from that input
-
+    const storeName = this.myInput.current.value;
     // 3. Change the page to /store/whatever
+    // because this is a child component of Route we get all of the
+    // methods from props, like push
+    // we change push state to change the url
+    this.props.history.push(`/store/${storeName}`);
   };
   render() {
     return (
