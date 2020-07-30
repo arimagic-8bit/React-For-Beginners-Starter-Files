@@ -1,7 +1,10 @@
+// to export helper functions to the components
+// we have to put export at first of the function
+
 export function formatPrice(cents) {
   return (cents / 100).toLocaleString("en-US", {
     style: "currency",
-    currency: "USD"
+    currency: "USD",
   });
 }
 
@@ -57,7 +60,7 @@ export function getFunName() {
     "scary",
     "thoughtless",
     "uptight",
-    "worried"
+    "worried",
   ];
 
   const nouns = [
@@ -90,7 +93,7 @@ export function getFunName() {
     "crises",
     "phenomena",
     "criteria",
-    "data"
+    "data",
   ];
 
   return `${rando(adjectives)}-${rando(adjectives)}-${rando(nouns)}`;
