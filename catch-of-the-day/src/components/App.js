@@ -15,8 +15,8 @@ class App extends Component {
         <div className="menu">
           <Header tagline="Fresh Seafood Market" />
         </div>
-        <Inventory />
         <Order />
+        <Inventory />
       </div>
     );
   }
