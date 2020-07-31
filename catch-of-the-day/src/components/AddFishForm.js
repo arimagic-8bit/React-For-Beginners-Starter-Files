@@ -1,14 +1,30 @@
 import React, { Component } from "react";
 
 class AddFishForm extends Component {
-  // const nameRef
-  // const priceRef
-  // const nameRef
-  // const nameRef
-  // const nameRef
+  nameRef = React.createRef();
+  priceRef = React.createRef();
+  statusRef = React.createRef();
+  descRef = React.createRef();
+  imageRef = React.createRef();
 
   createFish = (e) => {
     e.preventDefault();
+    //console.log(this.nameRef.current.value);
+
+    const fish = {
+      name: this.nameRef.current.value,
+      price: parseFloat(this.priceRef.current.value), //Cents
+      status: this.statusRef.current.value,
+      desc: this.descRef.current.value,
+      image: this.imageRef.current.value,
+    };
+
+    this.props.addFish(fish);
+
+    // refresh the form. .reset() lives in all forms and removes
+    // all the current data that is in there
+
+    e.currentTarget.reset();
   };
   render() {
     return (
