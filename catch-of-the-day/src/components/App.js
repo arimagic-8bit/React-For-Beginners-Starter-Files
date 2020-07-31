@@ -14,6 +14,8 @@ import sampleFishes from "../sample-fishes";
 // Let's use firebase to save the data when page refreshes!
 // WARNING --> use it in REAL TIME DB not CLOUD FIRESTONE
 
+// Another way to save data without using a DB, is using Local Storage
+
 class App extends Component {
   state = {
     fishes: {},
@@ -24,10 +26,24 @@ class App extends Component {
   // when it mounts syncs the data from DB to the app
   componentDidMount() {
     const { storeId } = this.props.match.params;
+
+    // first reinstaite our localStorage
+    const localStorageRef = localStorage.getItem(storeId);
+    if (localStorageRef) {
+      this.setState({ order: JSON.parse(localStorageRef) });
+    }
     this.ref = base.syncState(`${storeId}/fishes`, {
       context: this,
       state: "fishes",
     });
+  }
+
+  // we are going to save the info og order everytime is updated
+  // to transform de info into a string so we can read it we have
+  // to use the JSON.stringify method
+  componentDidUpdate() {
+    const { storeId } = this.props.match.params;
+    localStorage.setItem(storeId, JSON.stringify(this.state.order));
   }
 
   // si no paramos de escuchar a cualquier cambio, puede haber un memory leak en el
@@ -56,6 +72,24 @@ class App extends Component {
     this.setState({ fishes });
   };
 
+  updateFish = (key, updatedFish) => {
+    //1. take copy of current state
+    const fishes = { ...this.state.fishes };
+    //2. Update that state
+    fishes[key] = updatedFish;
+    //3. set to state
+    this.setState({ fishes });
+  };
+
+  deleteFish = (key) => {
+    //1. copy
+    const fishes = { ...this.state.fishes };
+    //2. update state (in order to remove it from FireBase we have to set it to null)
+    fishes[key] = null;
+    //3. update
+    this.setState({ fishes });
+  };
+
   loadSamplesFishes = () => {
     this.setState({ fishes: sampleFishes });
   };
@@ -67,6 +101,12 @@ class App extends Component {
     // if not star by one
     order[key] = order[key] + 1 || 1;
 
+    this.setState({ order });
+  };
+
+  deleteOrder = (key) => {
+    const order = { ...this.state.order };
+    delete order[key];
     this.setState({ order });
   };
 
@@ -94,10 +134,17 @@ class App extends Component {
         </div>
         {/* We spread all the state as props {...this.state}. The problem is that maybe we don't want 
         to pass all the data. We don't have to pass all the data if we don't need it */}
-        <Order fishes={this.state.fishes} order={this.state.order} />
+        <Order
+          deleteOrder={this.deleteOrder}
+          fishes={this.state.fishes}
+          order={this.state.order}
+        />
         <Inventory
           addFish={this.addFish}
           loadSamplesFishes={this.loadSamplesFishes}
+          fishes={this.state.fishes}
+          updateFish={this.updateFish}
+          deleteFish={this.deleteFish}
         />
       </div>
     );
