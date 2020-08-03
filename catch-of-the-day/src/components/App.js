@@ -16,6 +16,8 @@ import sampleFishes from "../sample-fishes";
 
 // Another way to save data without using a DB, is using Local Storage
 
+// We can use PropTypes to check if the data we  are passing to props is the correct one
+
 class App extends Component {
   state = {
     fishes: {},
